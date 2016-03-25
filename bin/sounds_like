@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "sounds_like"
+
+SoundsLike::CLI.new.call
+
+
+
+
