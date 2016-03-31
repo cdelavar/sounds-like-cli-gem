@@ -1,6 +1,9 @@
-require_relative "./sounds_like/version"
-require_relative './sounds_like/cli'
-require_relative './sounds_like/artist'
-require_relative './sounds_like/scraper'
+module SoundsLike
+end
+
+require_relative '../config/environment'
+
+
+
 
 

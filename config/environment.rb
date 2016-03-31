@@ -4,4 +4,7 @@ require 'JSON'
 require 'Pry'
 require 'csv'
 
-require_relative '../sounds_like/cli'
+require_relative '../lib/sounds_like/artist'
+require_relative '../lib/sounds_like/cli'
+require_relative '../lib/sounds_like/scraper'
+require_relative '../lib/sounds_like/version'

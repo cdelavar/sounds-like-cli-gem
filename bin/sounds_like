@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "sounds_like"
+require_relative '../lib/sounds_like'
 
 SoundsLike::CLI.new.call
 

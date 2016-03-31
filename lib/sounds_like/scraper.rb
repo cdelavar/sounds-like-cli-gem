@@ -14,16 +14,22 @@ class SoundsLike::Scraper
     url = "http://www.last.fm/music/#{get_band_name}/+similar?page=1"
     page = HTTParty.get(url)
     parse_page = Nokogiri::HTML(page)
-    parse_page
+    artists = parse_page.css(".grid-items-section").css("a")
+    artists
     binding.pry
   end
 
   def get_similar_artists
-    band_block = parse_page.css(".grid-items-section").css("a")
-    band_block.each do |item|
+    get_page.each do |item|
       @@bands_array << item.text
     end
     @@bands_array
+  end
+
+  def make_artists
+    get_page.each do |r|
+      SoundsLike::Artist.new_from_artist_list(r)
+    end
   end
 
   def artist_choice
