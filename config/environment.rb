@@ -3,6 +3,8 @@ require 'Nokogiri'
 require 'JSON'
 require 'Pry'
 require 'csv'
+require 'mechanize'
+require 'open-uri'
 
 require_relative '../lib/sounds_like/artist'
 require_relative '../lib/sounds_like/cli'

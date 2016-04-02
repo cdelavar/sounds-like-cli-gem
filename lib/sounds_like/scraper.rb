@@ -1,49 +1,47 @@
-class SoundsLike::Scraper
+require 'HTTParty'
+require 'JSON'
+require 'csv'
+require 'mechanize'
+require 'open-uri'
+require 'pry'
+require 'io/console'
 
-  @@bands_array = [].reject{ |e| e.empty? }
-  @@band_names = []
 
-  def get_band_name
-    puts "Sounds like which artist?"
-    artist = gets.strip
-    searchable_artist = artist.gsub(" ", "+")
-    searchable_artist
+
+class Scraper
+
+  def mechanize
+    agent = Mechanize.new
+    page = agent.get('https://secure.meetup.com/login/')
+    sign_in = page.forms[1]
+    puts "Email: "
+    sign_in.email = gets.chomp
+    puts "Password: "
+    sign_in.password = STDIN.noecho(&:gets).chomp
+    page = agent.submit(sign_in)
+    groups_page = agent.page.link_with(:text => "Groups").click
+  end
+  
+
+  def get_api_key
+    api_key = gets.chomp
+  end
+
+  def get_event_ids
+    groups = mechanize.link_with(:text => "Groups").click
+    
   end
 
   def get_page
-    url = "http://www.last.fm/music/#{get_band_name}/+similar?page=1"
-    page = HTTParty.get(url)
-    parse_page = Nokogiri::HTML(page)
-    artists = parse_page.css(".grid-items-section").css("a")
-    artists
-    binding.pry
-  end
-
-  def get_similar_artists
-    get_page.each do |item|
-      @@bands_array << item.text
-    end
-    @@bands_array
-  end
-
-  def make_artists
-    get_page.each do |r|
-      SoundsLike::Artist.new_from_artist_list(r)
-    end
-  end
-
-  def artist_choice
-    puts "Select band for more info: "
-    artist = gets.strip
-    if artist != "Next"
-      url = "http://www.last.fm/music/#{artist}"
-    else
-      url = "http://www.last.fm/music/#{get_band_name}/+similar?page=2"
-    end
-    page = HTTParty.get(url)
-    parse_page = Nokogiri::HTML(page)
+    url = "https://api.meetup.com/2/rsvps?key=#{get_api_key}&event_id=229834226&order=name"
+    doc = Nokogiri::HTML(open(url))
   end
 end
+
+binding.pry
+
+
+
 
 
 

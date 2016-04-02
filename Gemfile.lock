@@ -6,17 +6,27 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (4.2.6)
+      i18n (~> 0.7)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
     coderay (1.1.1)
     diff-lcs (1.2.5)
     httparty (0.13.7)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
+    i18n (0.7.0)
+    io-console (0.4.5)
     json (1.8.3)
     method_source (0.8.2)
     mini_portile2 (2.0.0)
+    minitest (5.8.4)
     multi_xml (0.5.5)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    power_assert (0.2.7)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -27,7 +37,7 @@ GEM
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
       rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.3)
+    rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -36,21 +46,31 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
+    rubygems-update (2.6.2)
     slop (3.6.0)
+    test-unit (3.1.8)
+      power_assert
+    thread_safe (0.3.5)
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 4.2, >= 4.2.6)
   bundler (~> 1.11)
   httparty
+  io-console
   json
   nokogiri
   pry
   rake (~> 10.0)
   require_all
   rspec
+  rubygems-update (~> 2.2)
   sounds_like!
+  test-unit
 
 BUNDLED WITH
    1.11.2
