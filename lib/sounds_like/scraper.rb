@@ -10,19 +10,17 @@ require 'io/console'
 
 class Scraper
 
-  def mechanize
-    Mechanize.new
-  end
+  
     
   def sign_in
     agent = Mechanize.new
-    page = @agent.get('https://secure.meetup.com/login/')
+    page = agent.get('https://secure.meetup.com/login/')
     sign_in = page.forms[1]
     puts "Email: "
     sign_in.email = gets.chomp
     puts "Password: "
     sign_in.password = STDIN.noecho(&:gets).chomp
-    page = @agent.submit(sign_in)
+    page = agent.submit(sign_in)
     
     binding.pry
   end 
@@ -33,11 +31,10 @@ class Scraper
 
   def parse_meetups
     url = "https://api.meetup.com/2/events?key=#{get_api_key}&sign=true&photo-host=public&rsvp=yes&status=past"
-    results = mechanize.get(url)
+    results = agent.get(url)
     save = results.content
     parsed_results = JSON.parse(save)
     parsed_results["results"]
-    self
     
   end
 
