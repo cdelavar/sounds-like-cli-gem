@@ -11,34 +11,57 @@ require 'io/console'
 class Scraper
 
   def mechanize
+    Mechanize.new
+  end
+    
+  def sign_in
     agent = Mechanize.new
-    page = agent.get('https://secure.meetup.com/login/')
+    page = @agent.get('https://secure.meetup.com/login/')
     sign_in = page.forms[1]
     puts "Email: "
     sign_in.email = gets.chomp
     puts "Password: "
     sign_in.password = STDIN.noecho(&:gets).chomp
-    page = agent.submit(sign_in)
-    groups_page = agent.page.link_with(:text => "Groups").click
-  end
-  
+    page = @agent.submit(sign_in)
+    
+    binding.pry
+  end 
 
   def get_api_key
-    api_key = gets.chomp
+    api_key = agent.get('https://secure.meetup.com/meetup_api/key/').css("#api-key-reveal").first.attribute("value").text
   end
 
-  def get_event_ids
-    groups = mechanize.link_with(:text => "Groups").click
+  def parse_meetups
+    url = "https://api.meetup.com/2/events?key=#{get_api_key}&sign=true&photo-host=public&rsvp=yes&status=past"
+    results = mechanize.get(url)
+    save = results.content
+    parsed_results = JSON.parse(save)
+    parsed_results["results"]
+    self
     
   end
 
-  def get_page
-    url = "https://api.meetup.com/2/rsvps?key=#{get_api_key}&event_id=229834226&order=name"
-    doc = Nokogiri::HTML(open(url))
+  def make_meetups
+    parse_meetups.each do |meetup|
+      Meetup.new_meetup(meetup)
+    end
+  end
+end
+  
+class Meetup
+  attr_accessor :name, :group_name, :date, :venue, :url, :description
+
+  @@all = []
+
+  def self.new_meetup(meetup)
+    self.new(meetup
+      )
+
   end
 end
 
 binding.pry
+
 
 
 
