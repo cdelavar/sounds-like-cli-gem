@@ -36,27 +36,38 @@ class Scraper
     save = results.content
     parsed_results = JSON.parse(save)
     parsed_results["results"]
-    binding.pry
   end
     
 
   def make_meetups
-    parse_meetups.each do |meetup|
-      Meetup.new_meetup(meetup)
+    parse_meetups.each do |attributes|
+      Meetup.new(attributes)
     end
   end
 end
   
 class Meetup
-  attr_accessor :name, :group_name, :date, :venue, :url, :description
 
   @@all = []
 
-  def self.new_meetup(meetup)
-    self.new(meetup["name"], meetup["group"]["name"],
-      (meetup["time"], meetup["event_url"])
-      )
+  def initialize(attributes)
+    attributes.each do |attribute_name, attribute_value|
+      self.class.send(:define_method, "#{attribute_name}=".to_sym) do |value|
+        instance_variable_set("@" + attribute_name.to_s, value)
+      end
 
+      self.class.send(:define_method, attribute_name.to_sym) do
+        instance_variable_get("@" + attribute_name.to_s)
+      end
+
+      self.send("#{attribute_name}=".to_sym, attribute_value)
+      
+    end 
+    @@all << self
+  end
+
+  def self.all
+    @@all
   end
 end
 
