@@ -36,6 +36,7 @@ class Scraper
     save = results.content
     parsed_results = JSON.parse(save)
     parsed_results["results"]
+    binding.pry
   end
     
 
@@ -52,7 +53,8 @@ class Meetup
   @@all = []
 
   def self.new_meetup(meetup)
-    self.new(meetup
+    self.new(meetup["name"], meetup["group"]["name"],
+      (meetup["time"], meetup["event_url"])
       )
 
   end
